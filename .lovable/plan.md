@@ -1,7 +1,7 @@
 # Auto Parts E-Commerce Store
 
 ## Goal
-Build a full-featured auto parts e-commerce website with an industrial rugged design, product catalog, shopping cart, and checkout flow. Shopify was skipped, so the store will run on Lovable Cloud (database + auth) and use the recommended built-in payment provider once the site has enough content to pass the eligibility check.
+Build a full-featured auto parts e-commerce website with an industrial rugged design, product catalog, shopping cart, and checkout flow. Shopify was skipped, so the store will run on Lovable Cloud (database + auth) and use offline payment (cash on delivery / bank transfer / pay in store), with no online payment provider.
 
 ## Design Direction
 - **Style:** Industrial rugged — dark garage-inspired palette with metallic gold accents.
