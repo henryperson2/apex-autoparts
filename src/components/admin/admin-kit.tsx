@@ -77,7 +77,7 @@ export function Field({
 }: {
   label: string;
   children: ReactNode;
-  hint?: string;
+  hint?: string | undefined;
 }) {
   return (
     <div className="min-w-0">
@@ -100,15 +100,15 @@ export function TextField({
   value: string;
   onChange: (v: string) => void;
   type?: string;
-  placeholder?: string;
-  hint?: string;
+  placeholder?: string | undefined;
+  hint?: string | undefined;
 }) {
   return (
-    <Field label={label} hint={hint}>
+    <Field label={label} {...(hint ? { hint } : {})}>
       <Input
         type={type}
         value={value}
-        placeholder={placeholder}
+        placeholder={placeholder ?? ""}
         onChange={(e) => onChange(e.target.value)}
       />
     </Field>
@@ -241,7 +241,8 @@ export function useAdminMutations(table: TableName, keyColumn: "id" | "key" = "i
 
   const create = useMutation({
     mutationFn: async (values: Record<string, unknown>) => {
-      const { data, error } = await supabase.from(table).insert(values as never).select().single();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { data, error } = await (supabase.from(table) as any).insert(values).select().single();
       if (error) throw error;
       return data;
     },
@@ -254,10 +255,8 @@ export function useAdminMutations(table: TableName, keyColumn: "id" | "key" = "i
 
   const update = useMutation({
     mutationFn: async ({ id, values }: { id: string; values: Record<string, unknown> }) => {
-      const { error } = await supabase
-        .from(table)
-        .update(values as never)
-        .eq(keyColumn, id);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { error } = await (supabase.from(table) as any).update(values).eq(keyColumn, id);
       if (error) throw error;
     },
     onSuccess: () => {
@@ -269,7 +268,8 @@ export function useAdminMutations(table: TableName, keyColumn: "id" | "key" = "i
 
   const remove = useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase.from(table).delete().eq(keyColumn, id);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { error } = await (supabase.from(table) as any).delete().eq(keyColumn, id);
       if (error) throw error;
     },
     onSuccess: () => {
