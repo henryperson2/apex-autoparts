@@ -2,7 +2,6 @@ import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import {
   BadgeCheck,
-  Boxes,
   ExternalLink,
   Home,
   Image as ImageIcon,
@@ -10,13 +9,9 @@ import {
   ListTree,
   Loader2,
   LogOut,
-  Mail,
   MessageSquareQuote,
   Menu,
-  Package,
-  Send,
   Settings,
-  Users,
   Wrench,
   X,
 } from "lucide-react";
@@ -30,16 +25,9 @@ import { cn } from "@/lib/utils";
 const NAV = [
   { to: "/admin/dashboard", label: "Overview", icon: LayoutDashboard },
   { to: "/admin/homepage", label: "Homepage", icon: Home },
-  { to: "/admin/products", label: "Products", icon: Package },
-  { to: "/admin/categories", label: "Categories", icon: Boxes },
   { to: "/admin/media", label: "Media", icon: ImageIcon },
   { to: "/admin/testimonials", label: "Reviews", icon: MessageSquareQuote },
-  { to: "/admin/pages", label: "Website content", icon: ListTree },
   { to: "/admin/navigation", label: "Navigation", icon: ListTree },
-  { to: "/admin/orders", label: "Orders", icon: Package },
-  { to: "/admin/messages", label: "Inquiries", icon: Mail },
-  { to: "/admin/customers", label: "Customers", icon: Users },
-  { to: "/admin/newsletter", label: "Newsletter", icon: Send },
   { to: "/admin/settings", label: "Settings", icon: Settings },
 ] as const;
 

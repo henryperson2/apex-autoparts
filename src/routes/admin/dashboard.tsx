@@ -74,14 +74,15 @@ function DashboardPanel() {
   const s = stats.data;
 
   const tiles = [
-    { label: "Products", value: s?.products ?? 0, icon: Package, to: "/admin/products" as const },
-    { label: "Orders", value: s?.orders ?? 0, icon: Package, to: "/admin/orders" as const },
-    { label: "New inquiries", value: s?.newMessages ?? 0, icon: Mail, to: "/admin/messages" as const },
-    { label: "Customers", value: s?.customers ?? 0, icon: Users, to: "/admin/customers" as const },
+    { label: "Products", value: s?.products ?? 0, icon: Package, to: "/admin/dashboard" as const },
+    { label: "Orders", value: s?.orders ?? 0, icon: Package, to: "/admin/dashboard" as const },
+    { label: "New inquiries", value: s?.newMessages ?? 0, icon: Mail, to: "/admin/dashboard" as const },
+    { label: "Customers", value: s?.customers ?? 0, icon: Users, to: "/admin/dashboard" as const },
     { label: "Reviews", value: s?.testimonials ?? 0, icon: Star, to: "/admin/testimonials" as const },
     { label: "Media files", value: s?.media ?? 0, icon: ImageIcon, to: "/admin/media" as const },
-    { label: "Subscribers", value: s?.subscribers ?? 0, icon: Send, to: "/admin/newsletter" as const },
+    { label: "Subscribers", value: s?.subscribers ?? 0, icon: Send, to: "/admin/dashboard" as const },
   ];
+
 
   return (
     <>
