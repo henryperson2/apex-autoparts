@@ -17,6 +17,7 @@ import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as OrderConfirmedRouteImport } from './routes/order-confirmed'
 import { Route as OrdersRouteImport } from './routes/orders'
+import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as ProductsIndexRouteImport } from './routes/products/index'
 import { Route as ProductsSlugRouteImport } from './routes/products/$slug'
 import { Route as ApiPublicMediaSplatRouteImport } from './routes/api/public/media/$'
@@ -61,6 +62,11 @@ const OrdersRoute = OrdersRouteImport.update({
   path: '/orders',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/admin/',
+  path: '/admin/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProductsIndexRoute = ProductsIndexRouteImport.update({
   id: '/products/',
   path: '/products/',
@@ -87,6 +93,7 @@ export interface FileRoutesByFullPath {
   '/order-confirmed': typeof OrderConfirmedRoute
   '/orders': typeof OrdersRoute
   '/products/$slug': typeof ProductsSlugRoute
+  '/admin/': typeof AdminIndexRoute
   '/products/': typeof ProductsIndexRoute
   '/api/public/media/$': typeof ApiPublicMediaSplatRoute
 }
@@ -100,6 +107,7 @@ export interface FileRoutesByTo {
   '/order-confirmed': typeof OrderConfirmedRoute
   '/orders': typeof OrdersRoute
   '/products/$slug': typeof ProductsSlugRoute
+  '/admin': typeof AdminIndexRoute
   '/products': typeof ProductsIndexRoute
   '/api/public/media/$': typeof ApiPublicMediaSplatRoute
 }
@@ -114,6 +122,7 @@ export interface FileRoutesById {
   '/order-confirmed': typeof OrderConfirmedRoute
   '/orders': typeof OrdersRoute
   '/products/$slug': typeof ProductsSlugRoute
+  '/admin/': typeof AdminIndexRoute
   '/products/': typeof ProductsIndexRoute
   '/api/public/media/$': typeof ApiPublicMediaSplatRoute
 }
@@ -129,6 +138,7 @@ export interface FileRouteTypes {
     | '/order-confirmed'
     | '/orders'
     | '/products/$slug'
+    | '/admin/'
     | '/products/'
     | '/api/public/media/$'
   fileRoutesByTo: FileRoutesByTo
@@ -142,6 +152,7 @@ export interface FileRouteTypes {
     | '/order-confirmed'
     | '/orders'
     | '/products/$slug'
+    | '/admin'
     | '/products'
     | '/api/public/media/$'
   id:
@@ -155,6 +166,7 @@ export interface FileRouteTypes {
     | '/order-confirmed'
     | '/orders'
     | '/products/$slug'
+    | '/admin/'
     | '/products/'
     | '/api/public/media/$'
   fileRoutesById: FileRoutesById
@@ -169,6 +181,7 @@ export interface RootRouteChildren {
   OrderConfirmedRoute: typeof OrderConfirmedRoute
   OrdersRoute: typeof OrdersRoute
   ProductsSlugRoute: typeof ProductsSlugRoute
+  AdminIndexRoute: typeof AdminIndexRoute
   ProductsIndexRoute: typeof ProductsIndexRoute
   ApiPublicMediaSplatRoute: typeof ApiPublicMediaSplatRoute
 }
@@ -231,6 +244,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OrdersRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/': {
+      id: '/admin/'
+      path: '/admin'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/products/': {
       id: '/products/'
       path: '/products'
@@ -265,6 +285,7 @@ const rootRouteChildren: RootRouteChildren = {
   OrderConfirmedRoute: OrderConfirmedRoute,
   OrdersRoute: OrdersRoute,
   ProductsSlugRoute: ProductsSlugRoute,
+  AdminIndexRoute: AdminIndexRoute,
   ProductsIndexRoute: ProductsIndexRoute,
   ApiPublicMediaSplatRoute: ApiPublicMediaSplatRoute,
 }
