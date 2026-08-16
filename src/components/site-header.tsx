@@ -5,18 +5,28 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import { useCart } from "@/hooks/useCart";
+import { useNavItems, useSiteSettings } from "@/hooks/useCms";
 
-const NAV = [
-  { to: "/", label: "Home" },
-  { to: "/products", label: "Catalog" },
-  { to: "/about", label: "Workshop" },
-  { to: "/contact", label: "Contact" },
-] as const;
+const FALLBACK_NAV = [
+  { id: "home", href: "/", label: "Home" },
+  { id: "catalog", href: "/products", label: "Catalog" },
+  { id: "about", href: "/about", label: "Workshop" },
+  { id: "contact", href: "/contact", label: "Contact" },
+];
 
 export function SiteHeader() {
   const { itemCount } = useCart();
   const { user } = useAuth();
   const [open, setOpen] = useState(false);
+  const { settings } = useSiteSettings();
+  const navQuery = useNavItems("header");
+
+  const nav = (navQuery.data ?? []).length
+    ? (navQuery.data ?? []).map((item) => ({ id: item.id, href: item.href, label: item.label }))
+    : FALLBACK_NAV;
+
+  const logoText = settings["logo_text"] || "ApexParts";
+  const logoSplit = Math.max(1, Math.ceil(logoText.length / 2));
 
   return (
     <header className="sticky top-0 z-50 surface-steel border-b border-brass/25">
@@ -26,18 +36,19 @@ export function SiteHeader() {
             <Wrench className="h-5 w-5" />
           </span>
           <span className="font-display text-2xl leading-none tracking-wide">
-            Apex<span className="text-brass">Parts</span>
+            {logoText.slice(0, logoSplit)}
+            <span className="text-brass">{logoText.slice(logoSplit)}</span>
           </span>
         </Link>
 
         <nav className="ml-6 hidden items-center gap-6 md:flex">
-          {NAV.map((item) => (
+          {nav.map((item) => (
             <Link
-              key={item.to}
-              to={item.to}
+              key={item.id}
+              to={item.href}
               className="label-stencil text-sm text-steel-foreground/75 transition-colors hover:text-brass"
               activeProps={{ className: "text-brass" }}
-              activeOptions={{ exact: item.to === "/" }}
+              activeOptions={{ exact: item.href === "/" }}
             >
               {item.label}
             </Link>
@@ -84,10 +95,10 @@ export function SiteHeader() {
 
       {open && (
         <nav className="border-t border-brass/20 bg-background/5 px-4 pb-4 pt-2 md:hidden">
-          {NAV.map((item) => (
+          {nav.map((item) => (
             <Link
-              key={item.to}
-              to={item.to}
+              key={item.id}
+              to={item.href}
               onClick={() => setOpen(false)}
               className="label-stencil block py-2 text-steel-foreground/80 hover:text-brass"
             >
