@@ -54,7 +54,7 @@ export function SiteFooter() {
             </span>
           </div>
           <p className="mt-4 max-w-xs text-sm text-steel-foreground/70">
-            {settings["footer_blurb"] ||
+            {settings["footer_text"] ||
               "Hard-wearing replacement and performance parts for daily drivers, work trucks and weekend builds. Counter staff who actually turn wrenches."}
           </p>
         </div>
@@ -79,26 +79,28 @@ export function SiteFooter() {
           <ul className="mt-4 space-y-3 text-sm text-steel-foreground/75">
             <li className="flex items-start gap-2">
               <Phone className="mt-0.5 h-4 w-4 text-brass" />
-              <span>{settings["contact_phone"] || "(555) 018-4420"}</span>
+              <span>{settings["phone"] || "(555) 018-4420"}</span>
             </li>
             <li className="flex items-start gap-2">
               <Clock className="mt-0.5 h-4 w-4 text-brass" />
-              <span>{settings["store_hours"] || "Mon–Sat, 7am – 7pm"}</span>
+              <span>{settings["hours"] || "Mon–Sat, 7am – 7pm"}</span>
             </li>
             <li className="flex items-start gap-2">
               <Truck className="mt-0.5 h-4 w-4 text-brass" />
-              <span>{settings["shipping_note"] || "Free shipping over $250"}</span>
+              <span>{settings["free_shipping_threshold"]
+                ? `Free shipping over $${settings["free_shipping_threshold"]}`
+                : "Free shipping over $250"}</span>
             </li>
             <li className="flex items-start gap-2">
               <Banknote className="mt-0.5 h-4 w-4 text-brass" />
-              <span>{settings["payment_note"] || "Pay on delivery, transfer or in store"}</span>
+              <span>{settings["service_area"] || "Pay on delivery, transfer or in store"}</span>
             </li>
           </ul>
         </div>
       </div>
 
       <div className="border-t border-brass/15 px-4 py-5 text-center text-xs text-steel-foreground/55">
-        {settings["footer_legal"] ||
+        {settings["copyright_text"] ||
           "© Apex Auto Parts. All prices in USD. No online card payments — offline payment only."}
       </div>
     </footer>
