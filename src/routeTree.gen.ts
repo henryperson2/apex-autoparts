@@ -22,6 +22,7 @@ import { Route as AdminDashboardRouteImport } from './routes/admin/dashboard'
 import { Route as AdminHomepageRouteImport } from './routes/admin/homepage'
 import { Route as AdminMediaRouteImport } from './routes/admin/media'
 import { Route as AdminNavigationRouteImport } from './routes/admin/navigation'
+import { Route as AdminProductsRouteImport } from './routes/admin/products'
 import { Route as AdminSettingsRouteImport } from './routes/admin/settings'
 import { Route as AdminTestimonialsRouteImport } from './routes/admin/testimonials'
 import { Route as ProductsIndexRouteImport } from './routes/products/index'
@@ -93,6 +94,11 @@ const AdminNavigationRoute = AdminNavigationRouteImport.update({
   path: '/admin/navigation',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminProductsRoute = AdminProductsRouteImport.update({
+  id: '/admin/products',
+  path: '/admin/products',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminSettingsRoute = AdminSettingsRouteImport.update({
   id: '/admin/settings',
   path: '/admin/settings',
@@ -132,6 +138,7 @@ export interface FileRoutesByFullPath {
   '/admin/homepage': typeof AdminHomepageRoute
   '/admin/media': typeof AdminMediaRoute
   '/admin/navigation': typeof AdminNavigationRoute
+  '/admin/products': typeof AdminProductsRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/testimonials': typeof AdminTestimonialsRoute
   '/products/$slug': typeof ProductsSlugRoute
@@ -152,6 +159,7 @@ export interface FileRoutesByTo {
   '/admin/homepage': typeof AdminHomepageRoute
   '/admin/media': typeof AdminMediaRoute
   '/admin/navigation': typeof AdminNavigationRoute
+  '/admin/products': typeof AdminProductsRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/testimonials': typeof AdminTestimonialsRoute
   '/products/$slug': typeof ProductsSlugRoute
@@ -173,6 +181,7 @@ export interface FileRoutesById {
   '/admin/homepage': typeof AdminHomepageRoute
   '/admin/media': typeof AdminMediaRoute
   '/admin/navigation': typeof AdminNavigationRoute
+  '/admin/products': typeof AdminProductsRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/testimonials': typeof AdminTestimonialsRoute
   '/products/$slug': typeof ProductsSlugRoute
@@ -195,6 +204,7 @@ export interface FileRouteTypes {
     | '/admin/homepage'
     | '/admin/media'
     | '/admin/navigation'
+    | '/admin/products'
     | '/admin/settings'
     | '/admin/testimonials'
     | '/products/$slug'
@@ -215,6 +225,7 @@ export interface FileRouteTypes {
     | '/admin/homepage'
     | '/admin/media'
     | '/admin/navigation'
+    | '/admin/products'
     | '/admin/settings'
     | '/admin/testimonials'
     | '/products/$slug'
@@ -235,6 +246,7 @@ export interface FileRouteTypes {
     | '/admin/homepage'
     | '/admin/media'
     | '/admin/navigation'
+    | '/admin/products'
     | '/admin/settings'
     | '/admin/testimonials'
     | '/products/$slug'
@@ -256,6 +268,7 @@ export interface RootRouteChildren {
   AdminHomepageRoute: typeof AdminHomepageRoute
   AdminMediaRoute: typeof AdminMediaRoute
   AdminNavigationRoute: typeof AdminNavigationRoute
+  AdminProductsRoute: typeof AdminProductsRoute
   AdminSettingsRoute: typeof AdminSettingsRoute
   AdminTestimonialsRoute: typeof AdminTestimonialsRoute
   ProductsSlugRoute: typeof ProductsSlugRoute
@@ -357,6 +370,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminNavigationRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/products': {
+      id: '/admin/products'
+      path: '/admin/products'
+      fullPath: '/admin/products'
+      preLoaderRoute: typeof AdminProductsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/settings': {
       id: '/admin/settings'
       path: '/admin/settings'
@@ -408,6 +428,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminHomepageRoute: AdminHomepageRoute,
   AdminMediaRoute: AdminMediaRoute,
   AdminNavigationRoute: AdminNavigationRoute,
+  AdminProductsRoute: AdminProductsRoute,
   AdminSettingsRoute: AdminSettingsRoute,
   AdminTestimonialsRoute: AdminTestimonialsRoute,
   ProductsSlugRoute: ProductsSlugRoute,
