@@ -18,6 +18,7 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as OrderConfirmedRouteImport } from './routes/order-confirmed'
 import { Route as OrdersRouteImport } from './routes/orders'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
+import { Route as AdminCategoriesRouteImport } from './routes/admin/categories'
 import { Route as AdminDashboardRouteImport } from './routes/admin/dashboard'
 import { Route as AdminHomepageRouteImport } from './routes/admin/homepage'
 import { Route as AdminMediaRouteImport } from './routes/admin/media'
@@ -72,6 +73,11 @@ const OrdersRoute = OrdersRouteImport.update({
 const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/admin/',
   path: '/admin/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminCategoriesRoute = AdminCategoriesRouteImport.update({
+  id: '/admin/categories',
+  path: '/admin/categories',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminDashboardRoute = AdminDashboardRouteImport.update({
@@ -134,6 +140,7 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/order-confirmed': typeof OrderConfirmedRoute
   '/orders': typeof OrdersRoute
+  '/admin/categories': typeof AdminCategoriesRoute
   '/admin/dashboard': typeof AdminDashboardRoute
   '/admin/homepage': typeof AdminHomepageRoute
   '/admin/media': typeof AdminMediaRoute
@@ -155,6 +162,7 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/order-confirmed': typeof OrderConfirmedRoute
   '/orders': typeof OrdersRoute
+  '/admin/categories': typeof AdminCategoriesRoute
   '/admin/dashboard': typeof AdminDashboardRoute
   '/admin/homepage': typeof AdminHomepageRoute
   '/admin/media': typeof AdminMediaRoute
@@ -177,6 +185,7 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/order-confirmed': typeof OrderConfirmedRoute
   '/orders': typeof OrdersRoute
+  '/admin/categories': typeof AdminCategoriesRoute
   '/admin/dashboard': typeof AdminDashboardRoute
   '/admin/homepage': typeof AdminHomepageRoute
   '/admin/media': typeof AdminMediaRoute
@@ -200,6 +209,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/order-confirmed'
     | '/orders'
+    | '/admin/categories'
     | '/admin/dashboard'
     | '/admin/homepage'
     | '/admin/media'
@@ -221,6 +231,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/order-confirmed'
     | '/orders'
+    | '/admin/categories'
     | '/admin/dashboard'
     | '/admin/homepage'
     | '/admin/media'
@@ -242,6 +253,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/order-confirmed'
     | '/orders'
+    | '/admin/categories'
     | '/admin/dashboard'
     | '/admin/homepage'
     | '/admin/media'
@@ -264,6 +276,7 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   OrderConfirmedRoute: typeof OrderConfirmedRoute
   OrdersRoute: typeof OrdersRoute
+  AdminCategoriesRoute: typeof AdminCategoriesRoute
   AdminDashboardRoute: typeof AdminDashboardRoute
   AdminHomepageRoute: typeof AdminHomepageRoute
   AdminMediaRoute: typeof AdminMediaRoute
@@ -340,6 +353,13 @@ declare module '@tanstack/react-router' {
       path: '/admin'
       fullPath: '/admin/'
       preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/categories': {
+      id: '/admin/categories'
+      path: '/admin/categories'
+      fullPath: '/admin/categories'
+      preLoaderRoute: typeof AdminCategoriesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/dashboard': {
@@ -424,6 +444,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   OrderConfirmedRoute: OrderConfirmedRoute,
   OrdersRoute: OrdersRoute,
+  AdminCategoriesRoute: AdminCategoriesRoute,
   AdminDashboardRoute: AdminDashboardRoute,
   AdminHomepageRoute: AdminHomepageRoute,
   AdminMediaRoute: AdminMediaRoute,
