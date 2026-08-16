@@ -2,16 +2,22 @@ import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import {
   BadgeCheck,
+  ClipboardList,
   ExternalLink,
+  FileText,
   Home,
   Image as ImageIcon,
   LayoutDashboard,
   ListTree,
   Loader2,
   LogOut,
+  Mail,
   MessageSquareQuote,
   Menu,
+  Package,
   Settings,
+  Tags,
+  Users,
   Wrench,
   X,
 } from "lucide-react";
@@ -24,12 +30,19 @@ import { cn } from "@/lib/utils";
 
 const NAV = [
   { to: "/admin/dashboard", label: "Overview", icon: LayoutDashboard },
+  { to: "/admin/products", label: "Products", icon: Package },
+  { to: "/admin/categories", label: "Categories", icon: Tags },
+  { to: "/admin/orders", label: "Orders", icon: ClipboardList },
+  { to: "/admin/customers", label: "Customers", icon: Users },
+  { to: "/admin/messages", label: "Messages", icon: Mail },
   { to: "/admin/homepage", label: "Homepage", icon: Home },
+  { to: "/admin/pages", label: "Pages", icon: FileText },
   { to: "/admin/media", label: "Media", icon: ImageIcon },
   { to: "/admin/testimonials", label: "Reviews", icon: MessageSquareQuote },
   { to: "/admin/navigation", label: "Navigation", icon: ListTree },
   { to: "/admin/settings", label: "Settings", icon: Settings },
 ] as const;
+
 
 export function AdminShell({ children }: { children: ReactNode }) {
   const navigate = useNavigate();
