@@ -2,16 +2,22 @@ import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import {
   BadgeCheck,
+  ClipboardList,
   ExternalLink,
+  FileText,
   Home,
   Image as ImageIcon,
   LayoutDashboard,
   ListTree,
   Loader2,
   LogOut,
+  Mail,
   MessageSquareQuote,
   Menu,
+  Package,
   Settings,
+  Tags,
+  Users,
   Wrench,
   X,
 } from "lucide-react";
