@@ -302,10 +302,21 @@ function ProductEditor({
         <ToggleField label="Featured on homepage" checked={form.is_featured} onChange={set("is_featured")} />
       </div>
 
+      {!form.is_published ? (
+        <p className="mt-4 rounded border border-border bg-muted/40 p-3 text-xs text-muted-foreground">
+          This product is a draft — it saves fine, but it stays hidden from the website until you
+          switch on “Published on website”.
+        </p>
+      ) : null}
+      {savedAt ? (
+        <p className="mt-3 text-xs text-muted-foreground">Last saved at {savedAt}.</p>
+      ) : null}
+
       <div className="mt-4 flex items-center gap-2">
         <SaveButton
           pending={pending}
-          onClick={() =>
+          onClick={() => {
+            setSavedAt(new Date().toLocaleTimeString());
             onSave({
               name: form.name,
               slug: form.slug.trim() ? slugify(form.slug) : slugify(form.name),
