@@ -337,8 +337,8 @@ function ProductEditor({
               sort_order: Number(form.sort_order) || 0,
               is_featured: form.is_featured,
               is_published: form.is_published,
-            })
-          }
+            });
+          }}
         />
         <ConfirmDelete onConfirm={onDelete} description={`"${product.name}" will be permanently deleted.`} />
       </div>
