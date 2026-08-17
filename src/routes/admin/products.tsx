@@ -234,6 +234,7 @@ function ProductEditor({
     is_featured: product.is_featured,
     is_published: product.is_published,
   });
+  const [savedAt, setSavedAt] = useState<string | null>(null);
   const set = (key: keyof typeof form) => (value: string | boolean) =>
     setForm((prev) => ({ ...prev, [key]: value }));
 
