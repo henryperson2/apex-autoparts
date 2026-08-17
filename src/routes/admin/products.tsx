@@ -101,7 +101,7 @@ function Panel() {
         sku: `SKU-${stamp}`,
         price: 0,
         stock: 0,
-        is_published: false,
+        is_published: true,
       },
       { onSuccess: (row: unknown) => setOpenId((row as AdminProduct).id) },
     );
