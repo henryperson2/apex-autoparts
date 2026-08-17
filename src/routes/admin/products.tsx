@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Plus, Search } from "lucide-react";
+import { ArrowLeft, Pencil, Plus, Search } from "lucide-react";
 import { useMemo, useState } from "react";
 
 import {
@@ -107,6 +107,36 @@ function Panel() {
     );
   };
 
+  const editing = (list.data ?? []).find((p) => p.id === openId) ?? null;
+
+  if (editing) {
+    return (
+      <>
+        <PanelHeader
+          title="Edit product"
+          description="Change any detail and press Save — it updates the live catalog instantly."
+          action={
+            <Button variant="outline" onClick={() => setOpenId(null)}>
+              <ArrowLeft /> Back to list
+            </Button>
+          }
+        />
+        <ProductEditor
+          key={editing.id}
+          product={editing}
+          categoryOptions={categoryOptions}
+          pending={update.isPending}
+          onClose={() => setOpenId(null)}
+          onSave={(values) => update.mutate({ id: editing.id, values })}
+          onDelete={() => {
+            remove.mutate(editing.id);
+            setOpenId(null);
+          }}
+        />
+      </>
+    );
+  }
+
   return (
     <>
       <PanelHeader
@@ -134,50 +164,39 @@ function Panel() {
         </p>
       </AdminCard>
 
-      {filtered.map((product) =>
-        openId === product.id ? (
-          <ProductEditor
-            key={product.id}
-            product={product}
-            categoryOptions={categoryOptions}
-            pending={update.isPending}
-            onClose={() => setOpenId(null)}
-            onSave={(values) => update.mutate({ id: product.id, values })}
-            onDelete={() => remove.mutate(product.id)}
-          />
-        ) : (
-          <AdminCard key={product.id}>
-            <div className="flex flex-wrap items-center gap-3">
-              {product.image_url ? (
-                <img
-                  src={product.image_url}
-                  alt={product.name}
-                  className="h-14 w-14 shrink-0 rounded border border-border object-cover"
-                />
-              ) : (
-                <span className="diagonal-hazard h-14 w-14 shrink-0 rounded border border-border" />
-              )}
-              <div className="min-w-0 flex-1">
-                <p className="truncate text-lg leading-tight">{product.name}</p>
-                <p className="text-xs text-muted-foreground">
-                  {product.sku} · ${Number(product.price).toFixed(2)} · stock {product.stock} ·{" "}
-                  {product.is_published ? "published" : "draft"}
-                </p>
-              </div>
-              <Button variant="outline" size="sm" onClick={() => setOpenId(product.id)}>
-                Edit
-              </Button>
-              <ConfirmDelete
-                onConfirm={() => remove.mutate(product.id)}
-                description={`"${product.name}" will be removed from the catalog.`}
+      {filtered.map((product) => (
+        <AdminCard key={product.id}>
+          <div className="flex flex-wrap items-center gap-3">
+            {product.image_url ? (
+              <img
+                src={product.image_url}
+                alt={product.name}
+                className="h-14 w-14 shrink-0 rounded border border-border object-cover"
               />
+            ) : (
+              <span className="diagonal-hazard h-14 w-14 shrink-0 rounded border border-border" />
+            )}
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-lg leading-tight">{product.name}</p>
+              <p className="text-xs text-muted-foreground">
+                {product.sku} · ${Number(product.price).toFixed(2)} · stock {product.stock} ·{" "}
+                {product.is_published ? "published" : "draft"}
+              </p>
             </div>
-          </AdminCard>
-        ),
-      )}
+            <Button variant="brass" size="sm" onClick={() => setOpenId(product.id)}>
+              <Pencil /> Edit
+            </Button>
+            <ConfirmDelete
+              onConfirm={() => remove.mutate(product.id)}
+              description={`"${product.name}" will be removed from the catalog.`}
+            />
+          </div>
+        </AdminCard>
+      ))}
     </>
   );
 }
+
 
 function ProductEditor({
   product,
