@@ -52,6 +52,7 @@ function HomePage() {
         .from("products")
         .select("*, categories(name, slug)")
         .eq("is_featured", true)
+        .order("updated_at", { ascending: false })
         .limit(8);
       if (error) throw error;
       return data as unknown as Product[];
