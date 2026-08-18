@@ -23,11 +23,21 @@ export function ProductCard({
         params={{ slug: product.slug }}
         className="relative block aspect-4/3 overflow-hidden surface-steel"
       >
-        <span className="absolute inset-0 flex items-center justify-center">
-          <span className="font-display text-5xl text-brass/25 transition-transform duration-300 group-hover:scale-110">
-            {product.brand ?? "APEX"}
+        {product.image_url ? (
+          <img
+            src={product.image_url}
+            alt={product.name}
+            loading="lazy"
+            className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+          />
+        ) : (
+          <span className="absolute inset-0 flex items-center justify-center">
+            <span className="font-display text-5xl text-brass/25 transition-transform duration-300 group-hover:scale-110">
+              {product.brand ?? "APEX"}
+            </span>
           </span>
-        </span>
+        )}
+
         <span className="absolute left-0 top-0 h-1 w-full diagonal-hazard opacity-40" />
         {onSale && (
           <span className="absolute right-2 top-3 rounded bg-brass px-2 py-0.5 label-stencil text-xs text-brass-foreground">
