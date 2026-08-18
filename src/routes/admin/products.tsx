@@ -283,7 +283,18 @@ function ProductEditor({
         />
         <TextField label="Order" type="number" value={form.sort_order} onChange={set("sort_order")} />
         <div className="md:col-span-2">
-          <MediaField label="Product image" value={form.image_url} onChange={set("image_url")} />
+          <MediaField
+            label="Product image"
+            value={form.image_url}
+            onChange={set("image_url")}
+            onSelect={(url) => {
+              onSave({ image_url: url });
+              setSavedAt(new Date().toLocaleTimeString());
+            }}
+          />
+          <p className="mt-2 text-xs text-muted-foreground">
+            Uploaded or selected images are attached to this product immediately.
+          </p>
         </div>
         <div className="md:col-span-2">
           <AreaField label="Description" value={form.description} onChange={set("description")} />
