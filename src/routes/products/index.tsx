@@ -81,7 +81,9 @@ function ProductsPage() {
     if (sort === "price-asc") return unitPrice(a) - unitPrice(b);
     if (sort === "price-desc") return unitPrice(b) - unitPrice(a);
     if (sort === "name") return a.name.localeCompare(b.name);
-    return Number(b.is_featured) - Number(a.is_featured);
+    const featuredDifference = Number(b.is_featured) - Number(a.is_featured);
+    if (featuredDifference !== 0) return featuredDifference;
+    return Number(Boolean(b.image_url)) - Number(Boolean(a.image_url));
   });
 
   const setSearch = (patch: Partial<z.infer<typeof searchSchema>>) =>
