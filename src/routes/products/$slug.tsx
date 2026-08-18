@@ -98,11 +98,20 @@ function ProductDetailPage() {
 
       <div className="mt-6 grid gap-10 lg:grid-cols-2">
         <div className="relative aspect-4/3 overflow-hidden rounded-md surface-steel">
-          <span className="absolute inset-0 flex items-center justify-center font-display text-7xl text-brass/25">
-            {item.brand ?? "APEX"}
-          </span>
+          {item.image_url ? (
+            <img
+              src={item.image_url}
+              alt={item.name}
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+          ) : (
+            <span className="absolute inset-0 flex items-center justify-center font-display text-7xl text-brass/25">
+              {item.brand ?? "APEX"}
+            </span>
+          )}
           <span className="absolute left-0 top-0 h-1.5 w-full diagonal-hazard opacity-50" />
         </div>
+
 
         <div>
           <p className="label-stencil text-sm text-brass">
