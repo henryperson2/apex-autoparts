@@ -369,11 +369,13 @@ export function MediaField({
   label,
   value,
   onChange,
+  onSelect,
   kind = "image",
 }: {
   label: string;
   value: string;
   onChange: (url: string) => void;
+  onSelect?: (url: string) => void;
   kind?: "image" | "video";
 }) {
   const media = useMediaAssets();
@@ -387,7 +389,13 @@ export function MediaField({
         <Button type="button" variant="outline" size="sm" onClick={() => setPicking((v) => !v)}>
           Library
         </Button>
-        <UploadButton label="Upload" onUploaded={(asset) => onChange(asset.url)} />
+        <UploadButton
+          label="Upload"
+          onUploaded={(asset) => {
+            onChange(asset.url);
+            onSelect?.(asset.url);
+          }}
+        />
       </div>
       {picking && (
         <div className="mt-2 grid max-h-52 grid-cols-3 gap-2 overflow-y-auto rounded border border-border p-2 sm:grid-cols-5">
@@ -400,6 +408,7 @@ export function MediaField({
               type="button"
               onClick={() => {
                 onChange(asset.url);
+                onSelect?.(asset.url);
                 setPicking(false);
               }}
               className="overflow-hidden rounded border border-border hover:border-brass"
