@@ -173,32 +173,38 @@ function CheckoutPage() {
                 <Label htmlFor="customer_name">Full name</Label>
                 <Input
                   id="customer_name"
-                  required
+                  maxLength={100}
                   value={form.customer_name}
                   onChange={set("customer_name")}
+                  aria-invalid={Boolean(errors.customer_name)}
                   className="mt-1.5"
                 />
+                {fieldError("customer_name")}
               </div>
               <div>
                 <Label htmlFor="customer_phone">Phone</Label>
                 <Input
                   id="customer_phone"
-                  required
+                  maxLength={30}
                   value={form.customer_phone}
                   onChange={set("customer_phone")}
+                  aria-invalid={Boolean(errors.customer_phone)}
                   className="mt-1.5"
                 />
+                {fieldError("customer_phone")}
               </div>
               <div className="sm:col-span-2">
                 <Label htmlFor="customer_email">Email</Label>
                 <Input
                   id="customer_email"
                   type="email"
-                  required
+                  maxLength={255}
                   value={form.customer_email}
                   onChange={set("customer_email")}
+                  aria-invalid={Boolean(errors.customer_email)}
                   className="mt-1.5"
                 />
+                {fieldError("customer_email")}
               </div>
             </div>
           </section>
@@ -210,22 +216,27 @@ function CheckoutPage() {
                 <Label htmlFor="shipping_address">Street address</Label>
                 <Input
                   id="shipping_address"
-                  required
+                  maxLength={300}
                   value={form.shipping_address}
                   onChange={set("shipping_address")}
+                  aria-invalid={Boolean(errors.shipping_address)}
                   className="mt-1.5"
                 />
+                {fieldError("shipping_address")}
               </div>
               <div>
                 <Label htmlFor="shipping_city">City</Label>
                 <Input
                   id="shipping_city"
-                  required
+                  maxLength={100}
                   value={form.shipping_city}
                   onChange={set("shipping_city")}
+                  aria-invalid={Boolean(errors.shipping_city)}
                   className="mt-1.5"
                 />
+                {fieldError("shipping_city")}
               </div>
+
               <div>
                 <Label htmlFor="shipping_postal_code">Postal code</Label>
                 <Input
