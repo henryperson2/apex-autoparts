@@ -91,7 +91,28 @@ export function SiteFooter() {
             {settings["footer_text"] ||
               "Hard-wearing replacement and performance parts for daily drivers, work trucks and weekend builds. Counter staff who actually turn wrenches."}
           </p>
+          <form onSubmit={handleSubscribe} className="mt-5">
+            <label htmlFor="newsletter-email" className="label-stencil text-xs text-brass">
+              Restock &amp; deals list
+            </label>
+            <div className="mt-2 flex gap-2">
+              <Input
+                id="newsletter-email"
+                type="email"
+                required
+                maxLength={255}
+                placeholder="you@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="bg-background/10"
+              />
+              <Button type="submit" variant="brass" disabled={subscribing}>
+                {subscribing ? <Loader2 className="animate-spin" /> : "Join"}
+              </Button>
+            </div>
+          </form>
         </div>
+
 
         {groups.map((group) => (
           <div key={group.label}>
