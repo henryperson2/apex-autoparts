@@ -176,7 +176,7 @@ function CheckoutPage() {
                   maxLength={100}
                   value={form.customer_name}
                   onChange={set("customer_name")}
-                  aria-invalid={Boolean(errors.customer_name)}
+                  aria-invalid={Boolean(errors["customer_name"])}
                   className="mt-1.5"
                 />
                 {fieldError("customer_name")}
@@ -188,7 +188,7 @@ function CheckoutPage() {
                   maxLength={30}
                   value={form.customer_phone}
                   onChange={set("customer_phone")}
-                  aria-invalid={Boolean(errors.customer_phone)}
+                  aria-invalid={Boolean(errors["customer_phone"])}
                   className="mt-1.5"
                 />
                 {fieldError("customer_phone")}
@@ -201,7 +201,7 @@ function CheckoutPage() {
                   maxLength={255}
                   value={form.customer_email}
                   onChange={set("customer_email")}
-                  aria-invalid={Boolean(errors.customer_email)}
+                  aria-invalid={Boolean(errors["customer_email"])}
                   className="mt-1.5"
                 />
                 {fieldError("customer_email")}
@@ -219,7 +219,7 @@ function CheckoutPage() {
                   maxLength={300}
                   value={form.shipping_address}
                   onChange={set("shipping_address")}
-                  aria-invalid={Boolean(errors.shipping_address)}
+                  aria-invalid={Boolean(errors["shipping_address"])}
                   className="mt-1.5"
                 />
                 {fieldError("shipping_address")}
@@ -231,7 +231,7 @@ function CheckoutPage() {
                   maxLength={100}
                   value={form.shipping_city}
                   onChange={set("shipping_city")}
-                  aria-invalid={Boolean(errors.shipping_city)}
+                  aria-invalid={Boolean(errors["shipping_city"])}
                   className="mt-1.5"
                 />
                 {fieldError("shipping_city")}
