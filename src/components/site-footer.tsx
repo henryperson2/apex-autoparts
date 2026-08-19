@@ -1,7 +1,16 @@
 import { Link } from "@tanstack/react-router";
-import { Banknote, Clock, Phone, Truck, Wrench } from "lucide-react";
+import { Banknote, Clock, Loader2, Phone, Truck, Wrench } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
+import { z } from "zod";
 
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { supabase } from "@/integrations/supabase/client";
 import { useNavItems, useSiteSettings } from "@/hooks/useCms";
+
+const emailSchema = z.string().trim().email("Enter a valid email address").max(255);
+
 
 const FALLBACK_GROUPS: { label: string; items: { id: string; href: string; label: string }[] }[] = [
   {
