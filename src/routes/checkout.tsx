@@ -75,8 +75,20 @@ function CheckoutPage() {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    const parsed = checkoutSchema.safeParse(form);
+    if (!parsed.success) {
+      const fieldErrors: Record<string, string> = {};
+      for (const issue of parsed.error.issues) {
+        const key = String(issue.path[0]);
+        if (!fieldErrors[key]) fieldErrors[key] = issue.message;
+      }
+      setErrors(fieldErrors);
+      toast.error("Please fix the highlighted fields.");
+      return;
+    }
+    setErrors({});
     setSubmitting(true);
-    try {
+
       const { data: order, error: orderError } = await supabase
         .from("orders")
         .insert({
