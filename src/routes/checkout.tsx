@@ -18,6 +18,23 @@ import {
   unitPrice,
   type PaymentMethod,
 } from "@/lib/store";
+import { z } from "zod";
+
+const checkoutSchema = z.object({
+  customer_name: z.string().trim().min(2, "Enter your full name").max(100),
+  customer_email: z.string().trim().email("Enter a valid email").max(255),
+  customer_phone: z
+    .string()
+    .trim()
+    .min(7, "Enter a reachable phone number")
+    .max(30)
+    .regex(/^[\d+()\-\s]+$/, "Digits, spaces and + ( ) - only"),
+  shipping_address: z.string().trim().min(5, "Enter your street address").max(300),
+  shipping_city: z.string().trim().min(2, "Enter your city").max(100),
+  shipping_postal_code: z.string().trim().max(20).optional(),
+  notes: z.string().trim().max(1000, "Notes must be under 1000 characters").optional(),
+});
+
 
 export const Route = createFileRoute("/checkout")({
   head: () => ({
@@ -53,13 +70,20 @@ function CheckoutPage() {
     shipping_postal_code: "",
     notes: "",
   });
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const subtotal = cartSubtotal(lines);
   const shipping = shippingCost(subtotal, method);
   const total = subtotal + shipping;
 
-  const set = (key: keyof typeof form) => (event: { target: { value: string } }) =>
+  const set = (key: keyof typeof form) => (event: { target: { value: string } }) => {
+    setErrors((prev) => ({ ...prev, [key]: "" }));
     setForm((prev) => ({ ...prev, [key]: event.target.value }));
+  };
+
+  const fieldError = (key: string) =>
+    errors[key] ? <p className="mt-1 text-xs text-destructive">{errors[key]}</p> : null;
+
 
   if (lines.length === 0) {
     return (
@@ -75,8 +99,22 @@ function CheckoutPage() {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    const parsed = checkoutSchema.safeParse(form);
+    if (!parsed.success) {
+      const fieldErrors: Record<string, string> = {};
+      for (const issue of parsed.error.issues) {
+        const key = String(issue.path[0]);
+        if (!fieldErrors[key]) fieldErrors[key] = issue.message;
+      }
+      setErrors(fieldErrors);
+      toast.error("Please fix the highlighted fields.");
+      return;
+    }
+    setErrors({});
     setSubmitting(true);
     try {
+
+
       const { data: order, error: orderError } = await supabase
         .from("orders")
         .insert({
@@ -135,32 +173,38 @@ function CheckoutPage() {
                 <Label htmlFor="customer_name">Full name</Label>
                 <Input
                   id="customer_name"
-                  required
+                  maxLength={100}
                   value={form.customer_name}
                   onChange={set("customer_name")}
+                  aria-invalid={Boolean(errors["customer_name"])}
                   className="mt-1.5"
                 />
+                {fieldError("customer_name")}
               </div>
               <div>
                 <Label htmlFor="customer_phone">Phone</Label>
                 <Input
                   id="customer_phone"
-                  required
+                  maxLength={30}
                   value={form.customer_phone}
                   onChange={set("customer_phone")}
+                  aria-invalid={Boolean(errors["customer_phone"])}
                   className="mt-1.5"
                 />
+                {fieldError("customer_phone")}
               </div>
               <div className="sm:col-span-2">
                 <Label htmlFor="customer_email">Email</Label>
                 <Input
                   id="customer_email"
                   type="email"
-                  required
+                  maxLength={255}
                   value={form.customer_email}
                   onChange={set("customer_email")}
+                  aria-invalid={Boolean(errors["customer_email"])}
                   className="mt-1.5"
                 />
+                {fieldError("customer_email")}
               </div>
             </div>
           </section>
@@ -172,41 +216,51 @@ function CheckoutPage() {
                 <Label htmlFor="shipping_address">Street address</Label>
                 <Input
                   id="shipping_address"
-                  required
+                  maxLength={300}
                   value={form.shipping_address}
                   onChange={set("shipping_address")}
+                  aria-invalid={Boolean(errors["shipping_address"])}
                   className="mt-1.5"
                 />
+                {fieldError("shipping_address")}
               </div>
               <div>
                 <Label htmlFor="shipping_city">City</Label>
                 <Input
                   id="shipping_city"
-                  required
+                  maxLength={100}
                   value={form.shipping_city}
                   onChange={set("shipping_city")}
+                  aria-invalid={Boolean(errors["shipping_city"])}
                   className="mt-1.5"
                 />
+                {fieldError("shipping_city")}
               </div>
+
               <div>
                 <Label htmlFor="shipping_postal_code">Postal code</Label>
                 <Input
                   id="shipping_postal_code"
+                  maxLength={20}
                   value={form.shipping_postal_code}
                   onChange={set("shipping_postal_code")}
                   className="mt-1.5"
                 />
+                {fieldError("shipping_postal_code")}
               </div>
               <div className="sm:col-span-2">
                 <Label htmlFor="notes">Notes (vehicle, VIN, gate code)</Label>
                 <Textarea
                   id="notes"
                   rows={3}
+                  maxLength={1000}
                   value={form.notes}
                   onChange={set("notes")}
                   className="mt-1.5"
                 />
+                {fieldError("notes")}
               </div>
+
             </div>
           </section>
 
