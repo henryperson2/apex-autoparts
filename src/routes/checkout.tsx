@@ -18,6 +18,23 @@ import {
   unitPrice,
   type PaymentMethod,
 } from "@/lib/store";
+import { z } from "zod";
+
+const checkoutSchema = z.object({
+  customer_name: z.string().trim().min(2, "Enter your full name").max(100),
+  customer_email: z.string().trim().email("Enter a valid email").max(255),
+  customer_phone: z
+    .string()
+    .trim()
+    .min(7, "Enter a reachable phone number")
+    .max(30)
+    .regex(/^[\d+()\-\s]+$/, "Digits, spaces and + ( ) - only"),
+  shipping_address: z.string().trim().min(5, "Enter your street address").max(300),
+  shipping_city: z.string().trim().min(2, "Enter your city").max(100),
+  shipping_postal_code: z.string().trim().max(20).optional(),
+  notes: z.string().trim().max(1000, "Notes must be under 1000 characters").optional(),
+});
+
 
 export const Route = createFileRoute("/checkout")({
   head: () => ({
