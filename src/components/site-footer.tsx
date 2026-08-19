@@ -34,6 +34,31 @@ const FALLBACK_GROUPS: { label: string; items: { id: string; href: string; label
 export function SiteFooter() {
   const { settings } = useSiteSettings();
   const navQuery = useNavItems("footer");
+  const [email, setEmail] = useState("");
+  const [subscribing, setSubscribing] = useState(false);
+
+  const handleSubscribe = async (event: React.FormEvent) => {
+    event.preventDefault();
+    const parsed = emailSchema.safeParse(email);
+    if (!parsed.success) {
+      toast.error(parsed.error.issues[0]?.message ?? "Enter a valid email address.");
+      return;
+    }
+    setSubscribing(true);
+    try {
+      const { error } = await supabase
+        .from("newsletter_subscribers")
+        .insert({ email: parsed.data.toLowerCase() });
+      if (error) throw error;
+      setEmail("");
+      toast.success("You're on the list — parts deals and restock alerts incoming.");
+    } catch {
+      toast.error("Couldn't subscribe right now. Please try again.");
+    } finally {
+      setSubscribing(false);
+    }
+  };
+
 
   const groups = (() => {
     const items = navQuery.data ?? [];
