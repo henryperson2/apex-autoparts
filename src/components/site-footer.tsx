@@ -1,7 +1,16 @@
 import { Link } from "@tanstack/react-router";
-import { Banknote, Clock, Phone, Truck, Wrench } from "lucide-react";
+import { Banknote, Clock, Loader2, Phone, Truck, Wrench } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
+import { z } from "zod";
 
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { supabase } from "@/integrations/supabase/client";
 import { useNavItems, useSiteSettings } from "@/hooks/useCms";
+
+const emailSchema = z.string().trim().email("Enter a valid email address").max(255);
+
 
 const FALLBACK_GROUPS: { label: string; items: { id: string; href: string; label: string }[] }[] = [
   {
@@ -25,6 +34,31 @@ const FALLBACK_GROUPS: { label: string; items: { id: string; href: string; label
 export function SiteFooter() {
   const { settings } = useSiteSettings();
   const navQuery = useNavItems("footer");
+  const [email, setEmail] = useState("");
+  const [subscribing, setSubscribing] = useState(false);
+
+  const handleSubscribe = async (event: React.FormEvent) => {
+    event.preventDefault();
+    const parsed = emailSchema.safeParse(email);
+    if (!parsed.success) {
+      toast.error(parsed.error.issues[0]?.message ?? "Enter a valid email address.");
+      return;
+    }
+    setSubscribing(true);
+    try {
+      const { error } = await supabase
+        .from("newsletter_subscribers")
+        .insert({ email: parsed.data.toLowerCase() });
+      if (error) throw error;
+      setEmail("");
+      toast.success("You're on the list — parts deals and restock alerts incoming.");
+    } catch {
+      toast.error("Couldn't subscribe right now. Please try again.");
+    } finally {
+      setSubscribing(false);
+    }
+  };
+
 
   const groups = (() => {
     const items = navQuery.data ?? [];
@@ -57,7 +91,28 @@ export function SiteFooter() {
             {settings["footer_text"] ||
               "Hard-wearing replacement and performance parts for daily drivers, work trucks and weekend builds. Counter staff who actually turn wrenches."}
           </p>
+          <form onSubmit={handleSubscribe} className="mt-5">
+            <label htmlFor="newsletter-email" className="label-stencil text-xs text-brass">
+              Restock &amp; deals list
+            </label>
+            <div className="mt-2 flex gap-2">
+              <Input
+                id="newsletter-email"
+                type="email"
+                required
+                maxLength={255}
+                placeholder="you@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="bg-background/10"
+              />
+              <Button type="submit" variant="brass" disabled={subscribing}>
+                {subscribing ? <Loader2 className="animate-spin" /> : "Join"}
+              </Button>
+            </div>
+          </form>
         </div>
+
 
         {groups.map((group) => (
           <div key={group.label}>
