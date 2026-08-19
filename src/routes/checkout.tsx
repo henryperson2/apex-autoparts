@@ -70,13 +70,20 @@ function CheckoutPage() {
     shipping_postal_code: "",
     notes: "",
   });
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const subtotal = cartSubtotal(lines);
   const shipping = shippingCost(subtotal, method);
   const total = subtotal + shipping;
 
-  const set = (key: keyof typeof form) => (event: { target: { value: string } }) =>
+  const set = (key: keyof typeof form) => (event: { target: { value: string } }) => {
+    setErrors((prev) => ({ ...prev, [key]: "" }));
     setForm((prev) => ({ ...prev, [key]: event.target.value }));
+  };
+
+  const fieldError = (key: string) =>
+    errors[key] ? <p className="mt-1 text-xs text-destructive">{errors[key]}</p> : null;
+
 
   if (lines.length === 0) {
     return (
