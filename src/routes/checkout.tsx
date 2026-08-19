@@ -88,6 +88,8 @@ function CheckoutPage() {
     }
     setErrors({});
     setSubmitting(true);
+    try {
+
 
       const { data: order, error: orderError } = await supabase
         .from("orders")
