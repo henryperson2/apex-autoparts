@@ -241,21 +241,26 @@ function CheckoutPage() {
                 <Label htmlFor="shipping_postal_code">Postal code</Label>
                 <Input
                   id="shipping_postal_code"
+                  maxLength={20}
                   value={form.shipping_postal_code}
                   onChange={set("shipping_postal_code")}
                   className="mt-1.5"
                 />
+                {fieldError("shipping_postal_code")}
               </div>
               <div className="sm:col-span-2">
                 <Label htmlFor="notes">Notes (vehicle, VIN, gate code)</Label>
                 <Textarea
                   id="notes"
                   rows={3}
+                  maxLength={1000}
                   value={form.notes}
                   onChange={set("notes")}
                   className="mt-1.5"
                 />
+                {fieldError("notes")}
               </div>
+
             </div>
           </section>
 
