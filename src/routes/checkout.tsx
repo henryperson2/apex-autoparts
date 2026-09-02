@@ -113,19 +113,19 @@ function CheckoutPage() {
     setErrors({});
     setSubmitting(true);
     try {
-
+      const details = parsed.data;
 
       const { data: order, error: orderError } = await supabase
         .from("orders")
         .insert({
           user_id: user?.id ?? null,
-          customer_name: form.customer_name,
-          customer_email: form.customer_email,
-          customer_phone: form.customer_phone,
-          shipping_address: form.shipping_address,
-          shipping_city: form.shipping_city,
-          shipping_postal_code: form.shipping_postal_code || null,
-          notes: form.notes || null,
+          customer_name: details.customer_name.trim(),
+          customer_email: details.customer_email.trim(),
+          customer_phone: details.customer_phone.trim(),
+          shipping_address: details.shipping_address.trim(),
+          shipping_city: details.shipping_city.trim(),
+          shipping_postal_code: details.shipping_postal_code?.trim() || null,
+          notes: details.notes?.trim() || null,
           payment_method: method,
           subtotal,
           shipping_cost: shipping,
