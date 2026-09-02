@@ -87,6 +87,11 @@ function ProductDetailPage() {
 
   const price = unitPrice(item);
   const onSale = item.sale_price != null && Number(item.sale_price) < Number(item.price);
+  const gallery: string[] = [
+    ...(item.image_url ? [item.image_url] : []),
+    ...((item.gallery_urls ?? []).filter((url) => url && url !== item.image_url)),
+  ];
+  const shownImage = activeImage && gallery.includes(activeImage) ? activeImage : gallery[0] ?? null;
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
