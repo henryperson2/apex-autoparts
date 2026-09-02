@@ -429,6 +429,82 @@ export function MediaField({
   );
 }
 
+/** Multi-image gallery editor: upload several images or pick them from the library. */
+export function GalleryField({
+  label,
+  value,
+  onChange,
+  hint,
+}: {
+  label: string;
+  value: string[];
+  onChange: (urls: string[]) => void;
+  hint?: string;
+}) {
+  const media = useMediaAssets();
+  const [picking, setPicking] = useState(false);
+  const options = (media.data ?? []).filter((asset) => asset.kind === "image");
+
+  const add = (url: string) => {
+    if (!url || value.includes(url)) return;
+    onChange([...value, url]);
+  };
+
+  return (
+    <Field label={label} hint={hint}>
+      <div className="flex flex-wrap items-center gap-2">
+        <UploadButton label="Upload image" onUploaded={(asset) => add(asset.url)} />
+        <Button type="button" variant="outline" size="sm" onClick={() => setPicking((v) => !v)}>
+          Add from library
+        </Button>
+        {value.length > 0 && (
+          <Button type="button" variant="ghost" size="sm" onClick={() => onChange([])}>
+            Clear all
+          </Button>
+        )}
+      </div>
+
+      {picking && (
+        <div className="mt-2 grid max-h-52 grid-cols-3 gap-2 overflow-y-auto rounded border border-border p-2 sm:grid-cols-5">
+          {options.length === 0 && (
+            <p className="col-span-full text-xs text-muted-foreground">Library is empty.</p>
+          )}
+          {options.map((asset) => (
+            <button
+              key={asset.id}
+              type="button"
+              onClick={() => add(asset.url)}
+              className="overflow-hidden rounded border border-border hover:border-brass"
+            >
+              <img src={asset.url} alt={asset.alt_text ?? ""} className="h-16 w-full object-cover" />
+            </button>
+          ))}
+        </div>
+      )}
+
+      {value.length > 0 && (
+        <div className="mt-3 grid grid-cols-3 gap-2 sm:grid-cols-5">
+          {value.map((url, index) => (
+            <div key={`${url}-${index}`} className="relative overflow-hidden rounded border border-border">
+              <img src={url} alt="" className="h-20 w-full object-cover" />
+              <button
+                type="button"
+                aria-label="Remove image"
+                onClick={() => onChange(value.filter((_, i) => i !== index))}
+                className="absolute right-1 top-1 rounded bg-background/85 px-1.5 text-xs"
+              >
+                ✕
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+    </Field>
+  );
+}
+
+
+
 /* ---------- select ---------- */
 
 export function SelectField({
