@@ -19,6 +19,7 @@ export type Product = {
   sale_price: number | null;
   stock: number;
   image_url: string | null;
+  gallery_urls?: string[] | null;
   fitment: string | null;
   warranty: string | null;
   is_featured: boolean;
