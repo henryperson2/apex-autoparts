@@ -6,6 +6,7 @@ import {
   AdminCard,
   AreaField,
   ConfirmDelete,
+  GalleryField,
   MediaField,
   PanelHeader,
   SaveButton,
@@ -51,6 +52,7 @@ type AdminProduct = {
   sale_price: number | null;
   stock: number;
   image_url: string | null;
+  gallery_urls: string[] | null;
   fitment: string | null;
   warranty: string | null;
   specifications: string | null;
@@ -230,6 +232,7 @@ function ProductEditor({
     fitment: product.fitment ?? "",
     warranty: product.warranty ?? "",
     image_url: product.image_url ?? "",
+    gallery_urls: product.gallery_urls ?? [],
     sort_order: String(product.sort_order ?? 0),
     is_featured: product.is_featured,
     is_published: product.is_published,
@@ -297,6 +300,18 @@ function ProductEditor({
           </p>
         </div>
         <div className="md:col-span-2">
+          <GalleryField
+            label="Product gallery (extra images)"
+            value={form.gallery_urls}
+            hint="Upload or pick several images. They show as thumbnails on the product page."
+            onChange={(urls) => {
+              setForm((prev) => ({ ...prev, gallery_urls: urls }));
+              onSave({ gallery_urls: urls });
+              setSavedAt(new Date().toLocaleTimeString());
+            }}
+          />
+        </div>
+        <div className="md:col-span-2">
           <AreaField label="Description" value={form.description} onChange={set("description")} />
         </div>
         <div className="md:col-span-2">
@@ -345,6 +360,7 @@ function ProductEditor({
               fitment: form.fitment || null,
               warranty: form.warranty || null,
               image_url: form.image_url || null,
+              gallery_urls: form.gallery_urls,
               sort_order: Number(form.sort_order) || 0,
               is_featured: form.is_featured,
               is_published: form.is_published,
