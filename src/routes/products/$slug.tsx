@@ -33,6 +33,7 @@ function ProductDetailPage() {
   const { slug } = Route.useParams();
   const { addItem } = useCart();
   const [quantity, setQuantity] = useState(1);
+  const [activeImage, setActiveImage] = useState<string | null>(null);
 
   const product = useQuery({
     queryKey: ["product", slug],
