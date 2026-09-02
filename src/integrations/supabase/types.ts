@@ -540,6 +540,7 @@ export type Database = {
           currency: string
           description: string | null
           fitment: string | null
+          gallery_urls: string[]
           id: string
           image_url: string | null
           is_featured: boolean
@@ -566,6 +567,7 @@ export type Database = {
           currency?: string
           description?: string | null
           fitment?: string | null
+          gallery_urls?: string[]
           id?: string
           image_url?: string | null
           is_featured?: boolean
@@ -592,6 +594,7 @@ export type Database = {
           currency?: string
           description?: string | null
           fitment?: string | null
+          gallery_urls?: string[]
           id?: string
           image_url?: string | null
           is_featured?: boolean
