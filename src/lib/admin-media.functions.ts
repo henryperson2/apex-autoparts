@@ -40,13 +40,14 @@ export const uploadMediaAsset = createServerFn({ method: "POST" })
 
     const path = `${new Date().toISOString().slice(0, 7)}/${crypto.randomUUID()}-${sanitizeName(data.fileName)}`;
 
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { error: uploadError } = await supabaseAdmin.storage
+    // Use the authenticated publishable client so Netlify only needs the
+    // publishable key. Storage and table RLS enforce the admin authorization.
+    const { error: uploadError } = await context.supabase.storage
       .from("media")
       .upload(path, bytes, { contentType: data.mimeType, upsert: false });
     if (uploadError) throw new Error(uploadError.message);
 
-    const { data: row, error: insertError } = await supabaseAdmin
+    const { data: row, error: insertError } = await context.supabase
       .from("media_assets")
       .insert({
         title: data.title ?? data.fileName,
@@ -60,7 +61,11 @@ export const uploadMediaAsset = createServerFn({ method: "POST" })
       })
       .select("*")
       .single();
-    if (insertError) throw new Error(insertError.message);
+    if (insertError) {
+      // Avoid leaving an orphaned storage object if the metadata insert fails.
+      await context.supabase.storage.from("media").remove([path]);
+      throw new Error(insertError.message);
+    }
 
     return row;
   });
@@ -78,18 +83,17 @@ export const deleteMediaAsset = createServerFn({ method: "POST" })
     });
     if (roleError || !isAdmin) throw new Error("Forbidden");
 
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { data: row } = await supabaseAdmin
+    const { data: row } = await context.supabase
       .from("media_assets")
       .select("storage_path")
       .eq("id", data.id)
       .maybeSingle();
 
     if (row?.storage_path) {
-      await supabaseAdmin.storage.from("media").remove([row.storage_path]);
+      await context.supabase.storage.from("media").remove([row.storage_path]);
     }
 
-    const { error } = await supabaseAdmin.from("media_assets").delete().eq("id", data.id);
+    const { error } = await context.supabase.from("media_assets").delete().eq("id", data.id);
     if (error) throw new Error(error.message);
     return { ok: true };
   });
