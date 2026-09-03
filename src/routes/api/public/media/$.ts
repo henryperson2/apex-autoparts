@@ -9,8 +9,10 @@ export const Route = createFileRoute("/api/public/media/$")({
           return new Response("Not found", { status: 404 });
         }
 
-        const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-        const { data, error } = await supabaseAdmin.storage.from("media").download(path);
+        // Publishable key only — public read is allowed by the storage read policy.
+        const { createPublicServerClient } = await import("@/lib/supabase-public.server");
+        const supabasePublic = createPublicServerClient();
+        const { data, error } = await supabasePublic.storage.from("media").download(path);
         if (error || !data) {
           return new Response("Not found", { status: 404 });
         }
