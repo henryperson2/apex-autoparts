@@ -83,18 +83,17 @@ export const deleteMediaAsset = createServerFn({ method: "POST" })
     });
     if (roleError || !isAdmin) throw new Error("Forbidden");
 
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { data: row } = await supabaseAdmin
+    const { data: row } = await context.supabase
       .from("media_assets")
       .select("storage_path")
       .eq("id", data.id)
       .maybeSingle();
 
     if (row?.storage_path) {
-      await supabaseAdmin.storage.from("media").remove([row.storage_path]);
+      await context.supabase.storage.from("media").remove([row.storage_path]);
     }
 
-    const { error } = await supabaseAdmin.from("media_assets").delete().eq("id", data.id);
+    const { error } = await context.supabase.from("media_assets").delete().eq("id", data.id);
     if (error) throw new Error(error.message);
     return { ok: true };
   });
