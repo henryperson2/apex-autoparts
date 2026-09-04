@@ -23,9 +23,20 @@ export const Route = createFileRoute("/")({
       {
         property: "og:description",
         content:
-          "Replacement and performance auto parts with fitment help from people who turn wrenches. Free shipping over $250.",
+           "Replacement and performance auto parts with fitment help from people who turn wrenches. Free shipping over $250.",
+      },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://apex-autoparts.lovable.app/" },
+      {
+        property: "og:image",
+        content: "https://apex-autoparts.lovable.app/__l5e/assets-v1/a31227c0-0a90-448e-8936-ae0f754a4a28/apex-og.jpg",
+      },
+      {
+        name: "twitter:image",
+        content: "https://apex-autoparts.lovable.app/__l5e/assets-v1/a31227c0-0a90-448e-8936-ae0f754a4a28/apex-og.jpg",
       },
     ],
+    links: [{ rel: "canonical", href: "https://apex-autoparts.lovable.app/" }],
   }),
   component: HomePage,
 });
