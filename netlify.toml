@@ -1,0 +1,10 @@
+# Netlify deployment configuration for Apex Auto Parts.
+# The server bundle is built with the "netlify" preset (see vite.config.ts,
+# which activates it automatically when NETLIFY=true).
+[build]
+  command = "npm run build"
+  publish = ".output/public"
+
+[functions]
+  # Bundler for the server function produced by the build.
+  node_bundler = "esbuild"
