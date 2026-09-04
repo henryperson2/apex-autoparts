@@ -5,6 +5,9 @@
   command = "npm run build"
   publish = ".output/public"
 
+[build.environment]
+  NODE_VERSION = "22"
+
 [functions]
   # Bundler for the server function produced by the build.
   node_bundler = "esbuild"
